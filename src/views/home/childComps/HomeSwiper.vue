@@ -2,7 +2,7 @@
   <swiper>
     <swiper-item v-for="item in banners" :key="item.link">
       <a :href="item.link">
-        <img :src="item.image" alt="">
+        <img :src="item.image" alt="" @load="imageLoad">
       </a>
     </swiper-item>
   </swiper>
@@ -19,9 +19,23 @@
         }
       }
     },
+    data() {
+      return {
+        isLoad: false
+      }
+    },
     components:{
       Swiper,
       SwiperItem
+    },
+    methods: {
+      imageLoad() {
+        // 目的：计算图片的高度。所以只要有一张图片就可以了，不需要4次
+        if(!this.isLoad) {
+           this.$emit('swiperImageLoad')
+           this.isLoad = true;
+        }
+      }
     }
   }
 </script>

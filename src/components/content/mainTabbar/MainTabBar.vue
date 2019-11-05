@@ -1,6 +1,6 @@
 <template>
     <tab-bar>
-      <!-- home本身在props里面定义成了一个字符串变量，它是一个变量，所以不需要动态绑定 -->
+      <!-- 这里的home一个字符串常量，原封不动的传递给子组件，所以不需要动态绑定 -->
       <tab-bar-item slot="tab-bar" path="/home" activeColor="blue">
         <img slot="item-icon" src="~assets/img/tabbar/home.svg" alt="" />
         <img slot="item-icon-active" src="~assets/img/tabbar/home_active.svg" alt="" />
