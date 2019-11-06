@@ -29,6 +29,7 @@
     methods:{
       titleClick(index) {
         this.currentIndex = index;
+        this.$emit('titleClick', index)
       },
       backClick() {
         // go(-1) 相当于 back()
