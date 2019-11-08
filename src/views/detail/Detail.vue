@@ -3,11 +3,6 @@
     <!-- 导航栏 -->
     <detail-nav-bar @titleClick="titleClick" ref="nav"></detail-nav-bar>
     <scroll class="content" ref="scroll":probe-type="3" @scroll="contentScroll">
-       <ul>
-         <li v-for="item in $store.state.cartList">
-           {{item}}
-         </li>
-       </ul>
       <detail-swiper :top-images="topImages"/>
       <detail-base-info :goods="goodsInfo"/>
       <detail-shop-info :shop="shopInfo"/>
@@ -18,6 +13,7 @@
     </scroll>
     <detail-bottom-bar @addCart="addToCart"/>
     <back-top @click.native="backTop" v-show="isShowBackTop" />
+    <!-- <toast :show="show" :message="message"/> -->
   </div>
 </template>
 <script>
@@ -32,10 +28,13 @@ import DetailBottomBar from './childcomponents/DetailBottomBar'
 
 import Scroll from "components/common/scroll/Scroll";
 import GoodsList from 'components/content/goods/GoodsList'
+// import Toast from 'components/common/toast/Toast'
 
 import { getDetail, Goods, getRecommend } from "network/detail";
 import {debounce} from 'common/utils'
 import {ItemListenerMixin, backTopMixin} from 'common/mixin'
+
+import {mapActions} from 'vuex'
 export default {
   name: "Detail",
   components: {
@@ -49,6 +48,7 @@ export default {
     DetailBottomBar,
     Scroll,
     GoodsList,
+    // Toast
   },
   mixins:[ItemListenerMixin, backTopMixin],
   data() {
@@ -64,6 +64,8 @@ export default {
       themeTopYs: [],
       getThemeTopY: null,
       currentIndex: 0,
+      // message: '',
+      // show: false
     };
   },
   created() {
@@ -114,6 +116,10 @@ export default {
     this.$bus.$off('itemImgLoad', this.itemImgListener)
   },
   methods:{
+    // ...mapActions(['addCart']),
+    ...mapActions({
+      add: 'addCart'
+    }),
      // 监听详情的图片加载完成,就调用此函数
     detailImageLoad() {
       // mixin，refresh是mounted里面的函数
@@ -145,10 +151,28 @@ export default {
       product.picture = this.topImages[0];
       product.title = this.goodsInfo.title;
       product.desc = this.goodsInfo.desc;
-      product.price = this.goodsInfo.newPrice;
+      product.price = this.goodsInfo.realPrice;
       product.iid = this.iid;
       // 2.将商品添加到购物车里面
-      this.$store.dispatch('addCart', product)
+      // this.$store.dispatch('addCart', product).then(res => {
+      //   console.log(res);       
+      // })
+
+      //  this.addCart(product).then(res => {
+      //   console.log(res);       
+      // })
+
+       this.add(product).then(res => {
+        // this.show = true;
+        // this.message = res;
+        // setTimeout(() => {
+        //    this.show = false;
+        //    this.message = '';
+        // }, 1500)       
+        this.$toast.Show(res, 1500)
+      })
+      // 3.toast弹窗，添加到购物车成功
+
     }
   }
 };
@@ -163,6 +187,6 @@ export default {
 .content {
   /* 100%就是继承父级的height */
   background-color: #fff;
-  height: calc(100% - 44px - 58px);
+  height: calc(100% - 44px - 58px - 40px);
 }
 </style>

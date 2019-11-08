@@ -33,7 +33,7 @@
 </script>
 <style scoped>
   .bottom-bar {
-    height: 58px;
+    height: 49px;
     position: fixed;
     background-color: #fff;
     left: 0;

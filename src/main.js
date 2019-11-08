@@ -2,8 +2,23 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+import FastClick from 'fastclick'
+import VueLazyLoad from 'vue-lazyload'
+
+// toast就是导出的obj，default可以不加{}，可以自定义变量名
+import toast from 'components/common/toast'
 Vue.config.productionTip = false
+// 添加事件总线对象
 Vue.prototype.$bus = new Vue()
+// 安装toast插件
+Vue.use(toast)
+// 解决移动端的300ms延时
+FastClick.attach(document.body)
+// 使用图片懒加载插件
+Vue.use(VueLazyLoad, {
+  loading: require('./assets/img/common/placeholder.png')
+})
 new Vue({
   render: h => h(App),
   router,
