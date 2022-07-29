@@ -15,7 +15,7 @@ public class exportExcel {
 
     @RequestMapping("/exportExcelTest")
     public void exportExcelTest(){
-        System.out.println("1");
+        System.out.println("2");
         List<Dept> message = excelTestService.getMessage();
         System.out.println(message);
     }
